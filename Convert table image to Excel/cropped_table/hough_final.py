@@ -64,8 +64,7 @@ def process_image(image_path):
                 elif angle > 80:
                     if length > max_horizontal_length:
                         max_horizontal_length = length
-
-            min_length = 0.5 * min(max_vertical_length, max_horizontal_length)
+
 
             for line in lines:
                 x1, y1, x2, y2 = line[0]
