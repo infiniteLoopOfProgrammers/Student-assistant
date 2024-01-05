@@ -1,1 +1,118 @@
-[{"Course_id": "3031003_07", "Course_id_main": "3031003", "Course_name": "آزمايشگاه سيستم عامل", "Units": 1, "Course_teacher": "مبهوت ناهيد", "Time": [{"Start_Time": "16:00", "End_Time": "18:00", "Course_day": "چهارشنبه", "Week": "ثابت"}]}, {"Course_id": "3031026_07", "Course_id_main": "3031026", "Course_name": "رياضيات گسسته", "Units": 3, "Course_teacher": "جعفرزاده عباس", "Time": [{"Start_Time": "16:00", "End_Time": "18:00", "Course_day": "دوشنبه", "Week": "زوج"}, {"Start_Time": "16:00", "End_Time": "18:00", "Course_day": "شنبه", "Week": "ثابت"}], "ExamTime": {"Data": "1402/10/20", "Start": "08:00", "End": "11:00"}}, {"Course_id": "3031045_01", "Course_id_main": "3031045", "Course_name": "كارگاه برنامه نويسي پيشرفته", "Units": 1, "Course_teacher": "اسكندري تربقان زهرا"}, {"Course_id": "3031015_01", "Course_id_main": "3031015", "Course_name": "پروژه", "Units": 3, "Course_teacher": "اساتيد گروه آموزشي"}, {"Course_id": "3031029_07", "Course_id_main": "3031029", "Course_name": "شبكه هاي كامپيوتري", "Units": 3, "Course_teacher": "رضائي محمد", "Time": [{"Start_Time": "10:00", "End_Time": "12:00", "Course_day": "شنبه", "Week": "فرد"}, {"Start_Time": "10:00", "End_Time": "12:00", "Course_day": "سه شنبه", "Week": "ثابت"}], "ExamTime": {"Data": "1402/10/19", "Start": "14:00", "End": "17:00"}}, {"Course_id": "3031009_01", "Course_id_main": "3031009", "Course_name": "آزمايشگاه مدارهاي منطقي", "Units": 1, "Course_teacher": "غلاميان محمد حسين", "Time": [{"Start_Time": "16:00", "End_Time": "18:00", "Course_day": "سه شنبه", "Week": "ثابت"}]}, {"Course_id": "3031031_07", "Course_id_main": "3031031", "Course_name": "شيوه پژوهش و ارائه", "Units": 2, "Course_teacher": "صادقي زاده مهدي", "Time": [{"Start_Time": "18:00", "End_Time": "20:00", "Course_day": "شنبه", "Week": "ثابت"}], "ExamTime": {"Data": "1402/10/21", "Start": "08:00", "End": "11:00"}}]
+[
+    {
+        "Course_id": "3031003_07",
+        "Course_id_main": "3031003",
+        "Course_name": "آزمايشگاه سيستم عامل",
+        "Units": 1,
+        "Course_teacher": "مبهوت ناهيد",
+        "Time": [
+            {
+                "Start_Time": "16:00",
+                "End_Time": "18:00",
+                "Course_day": "چهارشنبه",
+                "Week": "ثابت"
+            }
+        ]
+    },
+    {
+        "Course_id": "3031026_07",
+        "Course_id_main": "3031026",
+        "Course_name": "رياضيات گسسته",
+        "Units": 3,
+        "Course_teacher": "جعفرزاده عباس",
+        "Time": [
+            {
+                "Start_Time": "16:00",
+                "End_Time": "18:00",
+                "Course_day": "دوشنبه",
+                "Week": "زوج"
+            },
+            {
+                "Start_Time": "16:00",
+                "End_Time": "18:00",
+                "Course_day": "شنبه",
+                "Week": "ثابت"
+            }
+        ],
+        "ExamTime": {
+            "Data": "1402/10/20",
+            "Start": "08:00",
+            "End": "11:00"
+        }
+    },
+    {
+        "Course_id": "3031045_01",
+        "Course_id_main": "3031045",
+        "Course_name": "كارگاه برنامه نويسي پيشرفته",
+        "Units": 1,
+        "Course_teacher": "اسكندري تربقان زهرا"
+    },
+    {
+        "Course_id": "3031015_01",
+        "Course_id_main": "3031015",
+        "Course_name": "پروژه",
+        "Units": 3,
+        "Course_teacher": "اساتيد گروه آموزشي"
+    },
+    {
+        "Course_id": "3031029_07",
+        "Course_id_main": "3031029",
+        "Course_name": "شبكه هاي كامپيوتري",
+        "Units": 3,
+        "Course_teacher": "رضائي محمد",
+        "Time": [
+            {
+                "Start_Time": "10:00",
+                "End_Time": "12:00",
+                "Course_day": "شنبه",
+                "Week": "فرد"
+            },
+            {
+                "Start_Time": "10:00",
+                "End_Time": "12:00",
+                "Course_day": "سه شنبه",
+                "Week": "ثابت"
+            }
+        ],
+        "ExamTime": {
+            "Data": "1402/10/19",
+            "Start": "14:00",
+            "End": "17:00"
+        }
+    },
+    {
+        "Course_id": "3031009_01",
+        "Course_id_main": "3031009",
+        "Course_name": "آزمايشگاه مدارهاي منطقي",
+        "Units": 1,
+        "Course_teacher": "غلاميان محمد حسين",
+        "Time": [
+            {
+                "Start_Time": "16:00",
+                "End_Time": "18:00",
+                "Course_day": "سه شنبه",
+                "Week": "ثابت"
+            }
+        ]
+    },
+    {
+        "Course_id": "3031031_07",
+        "Course_id_main": "3031031",
+        "Course_name": "شيوه پژوهش و ارائه",
+        "Units": 2,
+        "Course_teacher": "صادقي زاده مهدي",
+        "Time": [
+            {
+                "Start_Time": "18:00",
+                "End_Time": "20:00",
+                "Course_day": "شنبه",
+                "Week": "ثابت"
+            }
+        ],
+        "ExamTime": {
+            "Data": "1402/10/21",
+            "Start": "08:00",
+            "End": "11:00"
+        }
+    }
+]

@@ -3,8 +3,7 @@ from datetime import datetime
 import json
 from GetData import DataAdapter
 from GetInputs import inputs
-import pickle
-import hashlib
+from needFunction import create_checksum
 # define the class of time of courses
 
 
@@ -182,19 +181,6 @@ class Course:
                                      "End": self.CourseExamSplited["End"].strftime("%H:%M")}
         return one_course
 
-def create_checksum(objects):
-    sorted_objects = sorted(objects, key=lambda obj: obj.Id)
-    # Serialize the list of objects to a bytes object
-    serialized = pickle.dumps(sorted_objects)
-
-    # Create a hash object
-    hash_obj = hashlib.sha256()
-
-    # Update the hash object with the serialized bytes object
-    hash_obj.update(serialized)
-
-    # Return the hexadecimal checksum
-    return hash_obj.hexdigest()
 
 courseCode, groupCode = inputs()
 rows = DataAdapter(f"""SELECT Top 20 courses.*, courses.groupCode
