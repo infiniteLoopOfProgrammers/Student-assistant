@@ -1,6 +1,7 @@
 import json
 import random
 from needFunction import create_checksum_json
+from GetInputs import fittnessinputs
 
 class GA:
     def __init__(self, all_course,popSize):
@@ -25,32 +26,70 @@ class GA:
         return individual_mutated
 
     @staticmethod
-    def fitness(course_list, has_dormitory, isqochani):
+    def fitness(course_list ):
         conflicts = 0
-        # If the student has a high GPA, they might prefer more challenging classes
-        # if gpa > 3.5:
-        #     conflicts += len([c for c in schedule if c[0] in ['Math', 'Physics']])
-
-        # If the student has a dormitory, they might prefer classes in the afternoon
-
-        if not has_dormitory and not isqochani:
-            for c in course_list:
-                if "Time" in c and c["Time"] is not None:
-                    for item in c["Time"]:
-                        if item["Start_Time"] in ['12:00', '14:00']:
+        fittnessobject=fittnessinputs()
+        
+        listday=[]
+        uniqex=[]  #unique exam date
+        for c in course_list:
+            if "Time" in c and c["Time"] is not None:
+                for item in c["Time"]:
+                    if not fittnessobject["has_dormitory"] and not fittnessobject["isquchani"]:
+                        if item["Start_Time"]=="08:00" or  item["Start_Time"]=="18:00":  #as default
                             conflicts += 1
+                        if item["Start_Time"] in  fittnessobject["wont_times"]:
+                            conflicts += 1
+                        if item["Start_Time"] in  fittnessobject["times_user"]:
+                            conflicts += 1
+                        # if item["Start_Time"] in fittnessobject["want_time"]:
+                        #     conflicts-=1
+                    if fittnessobject["has_dormitory"] and not fittnessobject["isquchani"]: 
+                        if item["Start_Time"] in  fittnessobject["wont_times"]:
+                            conflicts += 1
+                        if item["Start_Time"] in  fittnessobject["times_user"]:
+                            conflicts += 1                           
                             
+                    if not fittnessobject["has_dormitory"] and fittnessobject["isquchani"]: 
+                        if item["Start_Time"] in  fittnessobject["wont_times"]:
+                            conflicts += 1
+                        if item["Start_Time"] in  fittnessobject["times_user"]:
+                            conflicts += 1         
+                        
+                    if item["Course_day"] not in listday:
+                        listday.append(item["Course_day"]),
+                
+                
+            if "ExamTime" in c and c["ExamTime"] is not None:  # Check for absence of exam time interference
+                for ex in c["ExamTime"]:
+                    if ex["Data"] not in uniqex:
+                        uniqex.append(ex)
+                    if ex in uniqex:
+                        conflicts+=1
+            if fittnessobject["Feshorde"] != 0:           
+                if len(listday) > 100//fittnessobject["Feshorde"]:  #rooz haye ziad 
+                    conflicts+=len(listday) - 100//fittnessobject["Feshorde"]
+                
+            if c["Course_name"] in fittnessobject["wont_less"] :
+                conflicts+=1
+                
+            if c["Course_teacher"] in fittnessobject["badteacher"]:
+                conflicts += 1
+                
+        for d in fittnessobject["wont_days"]:  
+            if  d  in listday:
+                conflicts += 1 
+                 
         count_utils = sum(course["Units"] for course in course_list)
-        if count_utils < 14:
-            conflicts += (14 - count_utils)
-        if count_utils > 20:
-            conflicts += (count_utils - 20)
-        # If the student prefers weekdays, they might not want classes on the weekend
-        # if prefers_weekdays:
-        #     conflicts += len([c for c in course_list if c[1] in ['14:00', '15:00']])
+        if count_utils < fittnessobject["min_unit"]:
+            conflicts += (fittnessobject["min_unit"] - count_utils)
+        if count_utils > fittnessobject["max_unit"]:
+            conflicts += (count_utils - fittnessobject["max_unit"])
+            
+        if count_utils > fittnessobject["userAvg"]:
+            conflicts+=count_utils - fittnessobject["userAvg"]
 
         return conflicts
-
 
     def random_schedule(course_list, target_sum):
         total_count = 0
