@@ -35,59 +35,47 @@ class GA:
         for c in course_list:
             if "Time" in c and c["Time"] is not None:
                 for item in c["Time"]:
-                    if not fittnessobject["has_dormitory"] and not fittnessobject["isquchani"]:
-                        if item["Start_Time"]=="08:00" or  item["Start_Time"]=="18:00":  #as default
+                    if not fittnessobject["has_dormitory"] and not fittnessobject["native"]:
+                        if item["Start_Time"]=="08:00" or  item["Start_Time"]=="18:00" or item["Start_Time"] in  fittnessobject["dont_times"]:  #as default
                             conflicts += 1
-                        if item["Start_Time"] in  fittnessobject["wont_times"]:
+                    else :
+                        if item["Start_Time"] in  fittnessobject["dont_times"]:
                             conflicts += 1
-                        if item["Start_Time"] in  fittnessobject["times_user"]:
-                            conflicts += 1
-                        # if item["Start_Time"] in fittnessobject["want_time"]:
-                        #     conflicts-=1
-                    if fittnessobject["has_dormitory"] and not fittnessobject["isquchani"]: 
-                        if item["Start_Time"] in  fittnessobject["wont_times"]:
-                            conflicts += 1
-                        if item["Start_Time"] in  fittnessobject["times_user"]:
-                            conflicts += 1                           
-                            
-                    if not fittnessobject["has_dormitory"] and fittnessobject["isquchani"]: 
-                        if item["Start_Time"] in  fittnessobject["wont_times"]:
-                            conflicts += 1
-                        if item["Start_Time"] in  fittnessobject["times_user"]:
-                            conflicts += 1         
+                        
                         
                     if item["Course_day"] not in listday:
-                        listday.append(item["Course_day"]),
+                        listday.append(item["Course_day"])
                 
                 
             if "ExamTime" in c and c["ExamTime"] is not None:  # Check for absence of exam time interference
-                for ex in c["ExamTime"]:
-                    if ex["Data"] not in uniqex:
-                        uniqex.append(ex)
-                    if ex in uniqex:
-                        conflicts+=1
-            if fittnessobject["Feshorde"] != 0:           
+                ex = c["ExamTime"]
+                if ex["Data"] not in uniqex:
+                    uniqex.append(ex)
+                else:
+                    conflicts+=1
+
+
+            if int(fittnessobject["Feshorde"]) != 0:           
                 if len(listday) > 100//fittnessobject["Feshorde"]:  #rooz haye ziad 
                     conflicts+=len(listday) - 100//fittnessobject["Feshorde"]
+
                 
-            if c["Course_name"] in fittnessobject["wont_less"] :
-                conflicts+=1
-                
-            if c["Course_teacher"] in fittnessobject["badteacher"]:
-                conflicts += 1
-                
-        for d in fittnessobject["wont_days"]:  
+        for d in fittnessobject["dont_days"]:  
             if  d  in listday:
                 conflicts += 1 
                  
-        count_utils = sum(course["Units"] for course in course_list)
-        if count_utils < fittnessobject["min_unit"]:
-            conflicts += (fittnessobject["min_unit"] - count_utils)
-        if count_utils > fittnessobject["max_unit"]:
-            conflicts += (count_utils - fittnessobject["max_unit"])
+        count_units = sum(course["Units"] for course in course_list)
+        if count_units < fittnessobject["min_unit"]:
+            conflicts += (fittnessobject["min_unit"] - count_units)
+        if count_units > fittnessobject["max_unit"]:
+            conflicts += (count_units - fittnessobject["max_unit"])
             
-        if count_utils > fittnessobject["userAvg"]:
-            conflicts+=count_utils - fittnessobject["userAvg"]
+        if  fittnessobject["userAvg"] < 12 and count_units > 14 :
+            conflicts+=1
+        elif fittnessobject["userAvg"] < 14 and count_units > 16:
+            conflicts+=1
+        elif fittnessobject["userAvg"] < 16 and count_units > 18 :
+            conflicts+=1
 
         return conflicts
 
@@ -166,7 +154,7 @@ if __name__ == "__main__":
         best_individual = None
         for generation in range(500):
             # Evaluate the fitness of each individual in the population
-            fitnesses = [GA.fitness(individual, False, False) for individual in GAobj.population]
+            fitnesses = [GA.fitness(individual) for individual in GAobj.population]
             
             if best_individual is not None:
                 max_index = fitnesses.index(max(fitnesses))
@@ -187,11 +175,11 @@ if __name__ == "__main__":
         checksum = create_checksum_json(best_individual)
         if checksum not in all_uniq_course_checksum:
             all_uniq_course.append(best_individual)
-            all_uniq_fitnesses.append(GA.fitness(best_individual, False, False))
+            all_uniq_fitnesses.append(GA.fitness(best_individual))
             all_uniq_course_checksum.append(checksum)
     # The best individual is the one with the highest fitness
     min_fitnesses = min(all_uniq_fitnesses)
-    best_individuals = [all_uniq_course[i] for i in range(len(all_uniq_course)) if GA.fitness(all_uniq_course[i], False, False) == min_fitnesses]
-    fitnesses = [GA.fitness(individual, False, False) for individual in best_individuals]
+    best_individuals = [all_uniq_course[i] for i in range(len(all_uniq_course)) if GA.fitness(all_uniq_course[i]) == min_fitnesses]
+    fitnesses = [GA.fitness(individual) for individual in best_individuals]
     with open('out/best_individuals.json', 'w', encoding='utf-8') as f:
         json.dump(best_individuals, f, ensure_ascii=False)

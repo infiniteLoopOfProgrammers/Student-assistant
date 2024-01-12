@@ -51,13 +51,14 @@ class Time_of_course:
 
 
 class Course:
-    def __init__(self, Id, College_code, College_name, Group_code, Group_name, Course_id,  Course_name, Units, Practica_unit, Capacity, Registered_number, Waiting_list, Gender, Course_teacher, Course_time_1, Course_exam, Limitation, For_entry, Compulsory_courses, Present, Type_of_course, Description):
+    def __init__(self, Id , College_code, College_name, Group_code, Group_name, Course_id,  Course_name, Units, Practica_unit, Capacity, Registered_number, Waiting_list, Gender, Course_teacher, Course_time_1, Course_exam, Limitation, For_entry, Compulsory_courses, Present, Type_of_course, Description):
         self.Id = Id
         self.College_code = College_code
         self.College_name = College_name
         self.Group_code = Group_code
         self.Group_name = Group_name
         self.Course_id = Course_id
+        self.Course_id_main = Course_id.split("_")[0]
         self.Course_name = Course_name
         self.Units = Units
         self.Practica_unit = Practica_unit
@@ -148,10 +149,6 @@ class Course:
             return False
         if self.Course_id.split("_")[0] == otherCourses.Course_id.split("_")[0]:
             return True
-        if self.Course_id == "3031010_07" and otherCourses.Course_id == "3031025_01":
-            pass
-        if self.Course_id == "3031025_01" and otherCourses.Course_id == "3031010_07":
-            pass
         for itemTime1 in self.TimesOfCourse:
             for itemTime2 in otherCourses.TimesOfCourse:
                 if itemTime1.check_interception(itemTime2):
@@ -167,7 +164,7 @@ class Course:
 
         one_course = {
             "Course_id": self.Course_id,
-            "Course_id_main": self.Course_id.split("_")[0],
+            "Course_id_main": self.Course_id_main,
             "Course_name": self.Course_name,
             "Units": self.Units,
             "Course_teacher": self.Course_teacher,
@@ -183,20 +180,25 @@ class Course:
 
 
 courseCode, groupCode = inputs()
-rows = DataAdapter(f"""SELECT Top 20 courses.*, courses.groupCode
+rows = DataAdapter(f"""SELECT courses.*, courses.groupCode
                         FROM courses
                         WHERE (((courses.courseCode)=?) AND ((courses.groupCode)=?));
                         """,(courseCode,groupCode))
 
-
+with open('json\help.json', 'r', encoding='utf-8') as f:
+        courses = json.load(f)
+selectedCourse = courses[0]["selectedCourses"]
 information_of_Courses = []
 # information_of_time = []
-
+all_course_main = []
 # انتقال اطلاعات دیتابیس به یک آرایه
 for row in rows:
     # new_Course = Course(rows[12])
-    information_of_Courses.append(Course(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15],
-                                         row[16], row[17], row[18], row[19], row[20], row[21]))
+    checkCourse = Course(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15],
+                                         row[16], row[17], row[18], row[19], row[20], row[21])
+    all_course_main.append(checkCourse.__dict__())
+    if checkCourse.Course_id_main in selectedCourse :
+        information_of_Courses.append(checkCourse)
 
 all_course = []
 # نوشتن اطلاعات هر تایم از یک کلاس در یک خط جدید
@@ -242,7 +244,7 @@ for group in group_all_course:
     group_all_course_json.append(group_course_json) 
        
 with open("json/data.json", mode='w', encoding='utf-8') as file:
-    json.dump(all_course, file, ensure_ascii=False)
+    json.dump(all_course_main, file, ensure_ascii=False)
 
 with open("json/dataGroup.json", mode='w', encoding='utf-8') as file:
     json.dump(group_all_course_json, file, ensure_ascii=False)

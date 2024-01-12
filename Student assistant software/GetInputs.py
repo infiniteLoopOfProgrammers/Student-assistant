@@ -1,25 +1,21 @@
-
+import json     
 def inputs():
-    return 30,31
+    return 30 , 31 
 
 def fittnessinputs():
+    with open('json\help.json', 'r', encoding='utf-8') as f:
+        courses = json.load(f)
+    courses_co = courses[0]
     fittnessobj={
-        "isquchani":False,
-        "wont_times":["08:00","14:00"],  #default baraye not quchani
+        "dont_times":courses_co["dontTimes"],  #default baraye not quchani
         "default_wontTime":["08:00","18:00"],
-        "want_times":["10:00","16:00"],
-        "has_dormitory" :False,
-        "userAvg":17,
-        "min_unit":14,
-        "max_unit":20,
-        "times_user":["08:00"],
-        "badteacher":["رضائي محمد","غلاميان محمد حسين"],
-        "wont_days":["شنبه"],
-        "want_days":["سه شنبه"],
-        "Feshorde":20,
-        "wont_less":[ "شبكه هاي كامپيوتري", "شيوه پژوهش و ارائه"]
-        #"Normal":False,
-        
+        "has_dormitory" :courses_co["dormitory"],
+        "userAvg":float(courses_co["average"]),
+        "min_unit":int(courses_co["minUnit"]),
+        "max_unit":int(courses_co["maxUnit"]),
+        "dont_days":courses_co["dontDays"],
+        "Feshorde":int(courses_co["distribution"]),
+        "native":courses_co["native"]
         
     }
     return fittnessobj
